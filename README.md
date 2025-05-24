@@ -18,14 +18,7 @@ This repository implements an iterative pseudo-labeling pipeline for object dete
   4. Saves images and YOLO-format labels for retraining.
 
 - `setup.py`  
-  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLO11, etc.). Simply run:
-  ```bash
-  python setup.py
-  ```
-  Then activate the created environment with:
-  ```bash
-  conda activate yolo_env_project
-  ```
+  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLO11, etc.).
 
 - `requirements.txt`  
   Lists Python packages needed.
@@ -67,16 +60,5 @@ python video.py \
   --model_path path/to/best.pt \
   --video_path path/to/video.mp4 \
 ```
-Press **S** during playback to save the current frame.
-
-### Annotation GUI
-```bash
-python yolo_annotation_editor.py \
-  --data_path path/to/video_or_images \
-  --input_type video     # or 'images' for a folder of frames
-  --model_path orig_best.pt \
-  --conf_thresh 0.5 \
-  --out_img_dir output/images \
-  --out_lbl_dir output/labels
-```
+Press **space** during playback to stop the video at the current frame.
 ---
