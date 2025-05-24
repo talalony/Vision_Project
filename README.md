@@ -61,6 +61,7 @@ python video.py \
   --video_path path/to/video.mp4 \
 ```
 Press **space** during playback to stop the video at the current frame.
+
 ---
 
 ## Downloading the Model
