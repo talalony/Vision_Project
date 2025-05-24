@@ -28,10 +28,7 @@ This repository implements an iterative pseudo-labeling pipeline for object dete
   ```
 
 - `requirements.txt`  
-  Lists Python packages needed for non-conda installations (e.g. via `pip install -r requirements.txt`).
-
-- `install_conda.py` (alias of `setup.py`)  
-  Conda-based installer that creates `yolo_env` with Python 3.10, CUDA-enabled PyTorch, and other dependencies.
+  Lists Python packages needed.
 
 ## Installation
 
@@ -43,20 +40,16 @@ Choose one of the following methods:
 python setup.py
 
 # Activate environment
-conda activate yolo_env
+conda activate yolo_env_project
 ```
 
-### 2. Conda environment export/import
+### 2. Conda environment import
   ```bash
-   # Create an environment using the provided environment file
-   conda env create -f environment.yml
-
-   # Or, if you prefer to generate from an existing env:
-   conda list -e > requirements.txt
-   conda create -n yolo_env -f requirements.txt
+   # Create an environment using the provided requirements file
+   conda create -n yolo_env_project -f requirements.txt
 
    # Activate the environment
-   conda activate yolo_env
+   conda activate yolo_env_project
    ```
 
 ## Usage Examples
