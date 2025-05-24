@@ -62,3 +62,12 @@ python video.py \
 ```
 Press **space** during playback to stop the video at the current frame.
 ---
+
+## Downloading the Model
+
+To download the pretrained YOLO checkpoint:
+1. Click the **Releases** tab at the top of this repository.
+2. Select the latest release.
+3. Under the **Assets** section, click on **`best.pt`** to download the checkpoint file to your machine.
+---
+
