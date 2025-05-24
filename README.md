@@ -1,14 +1,14 @@
 # Pseudo-Labeling YOLO for Video with Minimal Annotations
 
-This repository implements an iterative pseudo-labeling pipeline for object detection in video, using YOLOv8 and a custom annotation GUI. It minimizes manual labeling by generating pseudo-labels on video frames, correcting them via a GUI, and retraining the model in a loop.
+This repository implements an iterative pseudo-labeling pipeline for object detection in video, using YOLO11 and a custom annotation GUI. It minimizes manual labeling by generating pseudo-labels on video frames, correcting them via a GUI, and retraining the model in a loop.
 
 ## Repository Structure
 
 - `predict.py`  
-  Performs inference on a single image using a YOLO checkpoint. Outputs bounding boxes and confidence scores.
+  Performs inference on a single image using a YOLO checkpoint. Visualizes the image with the bounding-boxes.
 
 - `video.py`  
-  Streams inference on a video file. Includes a **save frame** feature—press **S** during playback to dump the current frame to disk.
+  Performs inference on a video file using a YOLO checkpoint. Visualizes the video with the bounding-boxes.
 
 - `yolo_annotation_editor.py`  
   A Pygame-based GUI that:
@@ -18,13 +18,13 @@ This repository implements an iterative pseudo-labeling pipeline for object dete
   4. Saves images and YOLO-format labels for retraining.
 
 - `setup.py`  
-  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLOv8, etc.). Simply run:
+  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLO11, etc.). Simply run:
   ```bash
   python setup.py
   ```
   Then activate the created environment with:
   ```bash
-  conda activate yolo_env
+  conda activate yolo_env_project
   ```
 
 - `requirements.txt`  
@@ -46,31 +46,33 @@ python setup.py
 conda activate yolo_env
 ```
 
-### 2. Virtual environment + pip
-```bash
-# Create venv and install
-python -m venv venv
-source venv/bin/activate        # Linux/macOS
-venv\Scripts\activate.bat       # Windows
-pip install -r requirements.txt
-```
+### 2. Conda environment export/import
+  ```bash
+   # Create an environment using the provided environment file
+   conda env create -f environment.yml
+
+   # Or, if you prefer to generate from an existing env:
+   conda list -e > requirements.txt
+   conda create -n yolo_env -f requirements.txt
+
+   # Activate the environment
+   conda activate yolo_env
+   ```
 
 ## Usage Examples
 
 ### Image Inference
 ```bash
 python predict.py \
-  --model_path orig_best.pt \
+  --model_path path/to/best.pt \
   --image_path path/to/image.png \
-  --conf_thresh 0.5
 ```
 
 ### Video Inference & Frame Saving
 ```bash
 python video.py \
-  --model_path orig_best.pt \
+  --model_path path/to/best.pt \
   --video_path path/to/video.mp4 \
-  --save_dir saved_frames
 ```
 Press **S** during playback to save the current frame.
 
@@ -84,19 +86,4 @@ python yolo_annotation_editor.py \
   --out_img_dir output/images \
   --out_lbl_dir output/labels
 ```
-
-## Report
-A LaTeX report (`report.tex`) is included that documents:
-1. Exploratory Data Analysis  
-2. Experiments and Training Metrics  
-3. Discussion and Conclusions
-
-Compile with:
-```bash
-pdflatex report.tex
-pdflatex report.tex
-```
-
 ---
-
-If you encounter any issues, please ensure your paths and environment variables (CUDA, Conda) are correctly configured. Happy annotating!
