@@ -18,32 +18,77 @@ This repository implements an iterative pseudo-labeling pipeline for object dete
   4. Saves images and YOLO-format labels for retraining.
 
 - `setup.py`  
-  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLO11, etc.).
+  Automates environment setup and dependency installation (GPU-enabled PyTorch, OpenCV, Ultralytics YOLO11, etc.). Supports both conda and pip installations.
 
 - `requirements.txt`  
-  Lists Python packages needed.
+  Lists conda packages needed for conda-based installation.
+
+- `requirements_pip.txt`  
+  Lists pip packages needed for pip-based installation.
 
 ## Installation
 
 Choose one of the following methods:
 
-### 1. Conda (recommended)
+### 1. Automated Setup (Recommended)
+
+#### Using Conda (Default)
 ```bash
-# Run installer script
+# Run installer script with conda
 python setup.py
+
+# Or explicitly specify conda
+python setup.py --conda
 
 # Activate environment
 conda activate yolo_env_project
 ```
 
-### 2. Conda environment import
-  ```bash
-   # Create an environment using the provided requirements file
-   conda create -n yolo_env_project -f requirements.txt
+#### Using Pip with Virtual Environment
+```bash
+# Install with pip in a virtual environment
+python setup.py --pip
 
-   # Activate the environment
-   conda activate yolo_env_project
-   ```
+# Activate virtual environment (Windows)
+yolo_env_project\Scripts\activate
+
+# Activate virtual environment (Linux/macOS)
+source yolo_env_project/bin/activate
+```
+
+### 2. Manual Installation
+
+#### Conda Environment Import
+```bash
+# Create an environment using the provided requirements file
+conda create -n yolo_env_project -f requirements.txt
+
+# Activate the environment
+conda activate yolo_env_project
+```
+
+#### Manual Pip Installation
+```bash
+# Create virtual environment (Windows)
+py -3.11 -m venv yolo_env_project
+# OR (if py launcher not available)
+python -m venv yolo_env_project
+
+# Create virtual environment (Linux/macOS)
+python3.11 -m venv yolo_env_project
+
+# Activate virtual environment
+# Windows:
+yolo_env_project\Scripts\activate
+# Linux/macOS:
+source yolo_env_project/bin/activate
+
+# Install PyTorch with CUDA support
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Install other dependencies
+pip install opencv-python pygame tqdm ultralytics numpy pillow pyyaml
+```
 
 ## Usage Examples
 
@@ -59,8 +104,23 @@ python predict.py \
 python video.py \
   --model_path path/to/best.pt \
   --video_path path/to/video.mp4 \
+  --save_video
 ```
 Press **space** during playback to stop the video at the current frame.
+
+### Annotation Editor
+```bash
+python yolo_annotation_editor.py
+```
+
+**Keybindings:**
+- `d` / `a`: Next / Previous frame
+- `b`: Enter "draw" mode to add a new box
+- `e`: Enter "edit" mode to select, move or resize boxes
+- `s`: Save current frame and its label file
+- `x`: Delete the currently selected box
+- `0-9`: Change class of selected box
+- `q`: Quit the editor
 
 ---
 

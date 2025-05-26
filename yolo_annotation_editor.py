@@ -476,15 +476,14 @@ class AnnotationEditor:
 
 
 if __name__ == '__main__':
-    # AnnotationEditor.video_to_frames("20_2_24_1.mp4", "output/images", prefix="video1")
-    
+
     editor = AnnotationEditor(
-        data_path='videos/20_2_24_1.mp4',
+        data_path='data/ood_video_data/surg_1.mp4',
         video_or_images="video",
         model_path='models/best.pt',
         conf_thresh=0.5,
-        out_img_dir='images',
-        out_lbl_dir='labels',
+        out_img_dir='data/editor/images',
+        out_lbl_dir='data/editor/labels',
         start_from_frame=0,
         width=1280,
         height=720
