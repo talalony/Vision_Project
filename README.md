@@ -79,9 +79,10 @@ python yolo_annotation_editor.py
 
 ## Downloading the Model
 
-To download the pretrained YOLO checkpoint:
-1. Click the **Releases** tab at the top of this repository.
-2. Select the latest release.
-3. Under the **Assets** section, click on **`best.pt`** to download the checkpoint file to your machine.
+- **Web:** Click [here](https://github.com/talalony/Vision_Project/releases/download/V1.0/best.pt) to download **`best.pt`** immediately.  
+- **CLI:** Run:
+  ```bash
+  wget https://github.com/talalony/Vision_Project/releases/download/V1.0/best.pt -O best.pt
+  
 ---
 
