@@ -37,6 +37,11 @@ def parse_args():
         help="Location to save frames into"
     )
     parser.add_argument(
+        "--save_video",
+        action="store_true",
+        help="Save the annotated video with '_annotated' suffix."
+    )
+    parser.add_argument(
         "--width",
         type=int,
         default=1280,
@@ -63,14 +68,37 @@ def main():
     if not cap.isOpened():
         raise IOError(f"Cannot open video file: {args.video_path}")
 
+    os.makedirs(args.save_dir, exist_ok=True)
+
+    # Get video properties for saving
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    # Setup video writer if save_video flag is set
+    video_writer = None
+    output_video_path = None
+    if args.save_video:
+        # Generate output filename based on input video name
+        input_basename = os.path.basename(args.video_path)
+        input_name, input_ext = os.path.splitext(input_basename)
+        output_video_path = os.path.join(args.save_dir, f"{input_name}_annotated{input_ext}")
+
+        fourcc = cv2.VideoWriter.fourcc(*'mp4v')  # Alternative: cv2.VideoWriter.fourcc('m', 'p', '4', 'v')
+        video_writer = cv2.VideoWriter(output_video_path, fourcc, fps, (args.width, args.height))
+        print(f"Will save annotated video to: {output_video_path}")
+
     window_name = "YOLO Video Inference"
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(window_name, args.width, args.height)
 
     print(f"Processing video '{args.video_path}' (press 'q' to quit and 'space' to pause)...")
+    if args.save_video:
+        print("Note: Annotated video will be saved even if you quit early.")
 
     play = True
     last_frame = None
+    frames_processed = 0
+
     while True:
         if play or last_frame is None:
             ret, frame = cap.read()
@@ -87,6 +115,15 @@ def main():
             # Draw detections
             annotated = results.plot()
 
+            # Save frame to video if writer is active
+            if video_writer is not None:
+                video_writer.write(annotated)
+
+            frames_processed += 1
+            if frames_processed % 30 == 0:  # Progress update every 30 frames
+                progress = (frames_processed / total_frames) * 100 if total_frames > 0 else 0
+                print(f"Processed {frames_processed}/{total_frames} frames ({progress:.1f}%)")
+
             last_frame = annotated
         else:
             annotated = last_frame
@@ -100,14 +137,21 @@ def main():
             break
         elif key == 32: # Space bar
             play = not play
+            print("Paused" if not play else "Resumed")
         elif key == ord('s'):
             frame_idx = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
             filename = f"frame_{frame_idx:06d}.png"
             save_path = os.path.join(args.save_dir, filename)
             cv2.imwrite(save_path, annotated)
+            print(f"Frame saved: {save_path}")
 
+    # Cleanup
     cap.release()
+    if video_writer is not None:
+        video_writer.release()
+        print(f"Annotated video saved to: {output_video_path}")
     cv2.destroyAllWindows()
+
 
 if __name__ == "__main__":
     main()

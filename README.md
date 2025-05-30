@@ -62,6 +62,19 @@ python video.py \
 ```
 Press **space** during playback to stop the video at the current frame.
 
+### Annotation Editor
+```bash
+python yolo_annotation_editor.py
+```
+
+**Keybindings:**
+- `d` / `a`: Next / Previous frame
+- `b`: Enter "draw" mode to add a new box
+- `e`: Enter "edit" mode to select, move or resize boxes
+- `s`: Save current frame and its label file
+- `x`: Delete the currently selected box
+- `0-9`: Change class of selected box
+- `q`: Quit the editor
 ---
 
 ## Downloading the Model
